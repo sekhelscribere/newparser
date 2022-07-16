@@ -34,7 +34,6 @@ postParsedR = do
         FormSuccess wff -> defaultLayout
             [whamlet|
                 <p>#{show $ tr $ extractRight $ parse parseFormula ""  $ unpack $ getFormula wff}
-                <a href=/parser> Go back to the parser
             |]
         _ -> defaultLayout
             [whamlet|
