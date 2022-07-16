@@ -33,7 +33,7 @@ postParsedR = do
     case result of
         FormSuccess wff -> defaultLayout
             [whamlet|
-                <p>#{show $ tr $ extractRight $ parse parseFormula ""  $ unpack $ getFormula wff}
+                <p>#{showParsed $ parse parseFormula ""  $ unpack $ getFormula wff}
             |]
         _ -> defaultLayout
             [whamlet|
