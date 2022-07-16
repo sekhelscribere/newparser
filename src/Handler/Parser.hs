@@ -25,7 +25,7 @@ data Wff = Wff {getFormula :: Text} deriving Show
     -- <$> areq textField "Your formula:  " Nothing
 wffForm :: Html -> MForm Handler (FormResult Wff, Widget)
 wffForm = renderDivs $ Wff
-    <$> areq textField "Formula" Nothing
+    <$> areq textField "" Nothing
 
 
 --getParserR :: Handler Html
@@ -48,5 +48,13 @@ getParserR = do
                 Type your DEL formula
             <form method=post action=@{ParsedR} enctype=#{enctype}>
               ^{widget}
+                <br>
                 <button>Submit
+                <br>
+                <br>
+                <ul>How to type a well-formed formula:
+                <li> Use p1, p2, p3,... for propositional variables
+                <li> Use &, v, ->, ~ for conjunction, disjuntion, implication and negation 
+                <li> If i is an agent and &phi; is a formula, then use K i &phi; for modalised formula (don't forget whitespaces!). You can use any string for an agent's name: K Daniil p1^p2 will work
+                <li>If &phi; and &psi; are wffs, then use [!&psi;]&phi; for a formula with  public anouncement modality (no whitespaces this time!)
                 |]

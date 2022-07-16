@@ -111,4 +111,4 @@ extractRight (Right x) = x
 
 showParsed :: Either ParseError Form -> String
 showParsed (Right a) = show $ tr a
-showParsed (Left b) = "Error! It is not a well-formed formula"
+showParsed (Left b) = "Error! It is not a well-formed formula, I promise"
