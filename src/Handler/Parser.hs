@@ -12,22 +12,49 @@ import Handler.AST
 import Text.Parsec
 
 
-data Wff = Wff
-    { getFormula :: Text}
+--data Wff = Wff
+    --{ getFormula :: Text}
 
-instance Show Wff where
-    show (Wff{ getFormula    = xs }) = show $ tr $ extractRight $ parse parseFormula "" $ (unpack xs)
+data Wff = Wff {getFormula :: Text} deriving Show
 
-wffForm ::  Html -> MForm Handler (FormResult Wff, Widget)
+--instance Show Wff where
+    --show (Wff{ getFormula    = xs }) = show $ tr $ extractRight $ parse parseFormula "" $ (unpack xs)
+
+--wffForm ::  Html -> MForm Handler (FormResult Wff, Widget)
+--wffForm = renderDivs $ Wff
+    -- <$> areq textField "Your formula:  " Nothing
+wffForm :: Html -> MForm Handler (FormResult Wff, Widget)
 wffForm = renderDivs $ Wff
-    <$> areq textField "Your formula:  " Nothing
+    <$> areq textField "" Nothing
+
+
+--getParserR :: Handler Html
+--getParserR = do 
+    --(widget, enctype) <- generateFormPost wffForm
+    --defaultLayout $ do 
+        --setTitle "Dynamic Epistemic Logic translator"
+        --[whamlet| <p> Please, type your DEL formula </p>
+    -- <form method=post action=@{ParsedR} enctype=#{enctype}>
+        -- ^{widget} </form>
+        -- <button>Submit </button>|]
 
 getParserR :: Handler Html
-getParserR = do 
+getParserR = do
+     -- Generate the form to be displayed
     (widget, enctype) <- generateFormPost wffForm
-    defaultLayout $ do 
-        setTitle "Dynamic Epistemic Logic translator"
-        [whamlet| <p> Please, type your DEL formula </p>
-    <form method=post action=@{ParsedR} enctype=#{enctype}>
-        ^{widget} </form>
-        <button>Submit </button>|]
+    defaultLayout
+         [whamlet|
+             <p>
+                Type your DEL formula
+            <form method=post action=@{ParsedR} enctype=#{enctype}>
+              ^{widget}
+                <br>
+                <button>Submit
+                <br>
+                <br>
+                <ul>How to type a well-formed formula:
+                <li> Use p1, p2, p3,... for propositional variables
+                <li> Use &, v, ->, ~ for conjunction, disjuntion, implication and negation 
+                <li> If i is an agent and &phi; is a formula, then use K i &phi; for modalised formula (don't forget whitespaces!). You can use any string for an agent's name: K Daniil p1^p2 will work
+                <li>If &phi; and &psi; are wffs, then use [!&psi;]&phi; for a formula with  public anouncement modality (no whitespaces this time!)
+                |]

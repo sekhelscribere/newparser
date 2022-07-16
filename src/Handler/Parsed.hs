@@ -15,15 +15,30 @@ import Text.Parsec
 
 
 
+--postParsedR :: Handler Html
+--postParsedR = do
+    --((result, widget), enctype) <- runFormPost wffForm
+    --case result of
+       -- FormSuccess wff -> defaultLayout [whamlet|<p>#{ show wff} </p>|]
+     --   _ -> defaultLayout
+        --    [whamlet|
+         --       <p>Invalid input, let's try again. </p>
+         --       <form method=post action=@{ParsedR} enctype=#{enctype}>
+         --           ^{widget} </form>
+         --           <button> Submit </button>
+         --   |]
 postParsedR :: Handler Html
 postParsedR = do
     ((result, widget), enctype) <- runFormPost wffForm
     case result of
-        FormSuccess wff -> defaultLayout [whamlet|<p>#{ show wff} </p>|]
+        FormSuccess wff -> defaultLayout
+            [whamlet|
+                <p>#{showParsed $ parse parseFormula ""  $ unpack $ getFormula wff}
+            |]
         _ -> defaultLayout
             [whamlet|
-                <p>Invalid input, let's try again. </p>
+                <p>Invalid input, let's try again.
                 <form method=post action=@{ParsedR} enctype=#{enctype}>
-                    ^{widget} </form>
-                    <button> Submit </button>
+                    ^{widget}
+                    <button> Submit
             |]
